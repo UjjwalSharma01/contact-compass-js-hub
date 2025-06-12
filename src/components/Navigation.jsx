@@ -1,15 +1,13 @@
 
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Users, Plus, Home, Search, LogOut, User } from 'lucide-react';
+import { Users, Plus, Home, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useAuth } from '../hooks/useAuth';
 
 const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
   const location = useLocation();
-  const { user, logout } = useAuth();
   
   const navItems = [
     {
@@ -71,13 +69,13 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
           <div className="flex items-center space-x-4">
             {isSearchVisible && (
               <div className="relative hidden sm:block">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400 z-10" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input
                   type="text"
                   placeholder="Search contacts..."
                   value={searchQuery}
                   onChange={(e) => onSearchChange(e.target.value)}
-                  className="pl-10 pr-4 w-64 bg-slate-50 border-slate-200 focus:bg-white h-10"
+                  className="pl-10 w-64 bg-slate-50 border-slate-200 focus:bg-white"
                 />
               </div>
             )}
@@ -88,28 +86,6 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
                 Add Contact
               </Button>
             </NavLink>
-
-            {/* User menu */}
-            {user && (
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="text-sm font-medium text-slate-700 hidden sm:block">
-                    {user.email}
-                  </span>
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={logout}
-                  className="text-slate-600 hover:text-slate-900"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
           </div>
         </div>
 
@@ -117,13 +93,13 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
         {isSearchVisible && (
           <div className="sm:hidden pb-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400 z-10" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 type="text"
                 placeholder="Search contacts..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-10 pr-4 w-full bg-slate-50 border-slate-200 focus:bg-white h-10"
+                className="pl-10 w-full bg-slate-50 border-slate-200 focus:bg-white"
               />
             </div>
           </div>

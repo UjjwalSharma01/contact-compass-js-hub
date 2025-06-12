@@ -1,13 +1,12 @@
 
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Plus, Trash2, Edit, Phone, Mail, Building, Filter, Download } from 'lucide-react';
+import { Search, Plus, Trash2, Edit, Phone, Mail, Building, Filter } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { exportContactsToCSV } from '../utils/exportUtils';
 
 const ContactList = ({ 
   contacts, 
@@ -44,10 +43,6 @@ const ContactList = ({
     work: 'bg-purple-100 text-purple-700',
     family: 'bg-pink-100 text-pink-700',
     other: 'bg-gray-100 text-gray-700'
-  };
-
-  const handleExportCSV = () => {
-    exportContactsToCSV(filteredContacts);
   };
 
   if (loading) {
@@ -87,23 +82,12 @@ const ContactList = ({
               {filteredContacts.length} of {contacts.length} contacts
             </p>
           </div>
-          <div className="flex gap-3">
-            <Button 
-              onClick={handleExportCSV}
-              variant="outline" 
-              className="shadow-sm"
-              disabled={filteredContacts.length === 0}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Export CSV
+          <Link to="/contacts/new">
+            <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Contact
             </Button>
-            <Link to="/contacts/new">
-              <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Contact
-              </Button>
-            </Link>
-          </div>
+          </Link>
         </div>
 
         {/* Filters */}
@@ -150,21 +134,21 @@ const ContactList = ({
             {filteredContacts.map(contact => (
               <Card key={contact.id} className="hover:shadow-xl transition-all duration-300 border-slate-200 bg-white/70 backdrop-blur-sm">
                 <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-start space-x-4 flex-1 min-w-0">
-                      <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium shadow-md flex-shrink-0">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center space-x-3 flex-1 min-w-0">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium shadow-md">
                         {contact.firstName.charAt(0)}{contact.lastName.charAt(0)}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold text-slate-800 truncate text-lg">
+                        <h3 className="font-semibold text-slate-800 truncate">
                           {contact.firstName} {contact.lastName}
                         </h3>
                         {contact.jobTitle && (
-                          <p className="text-sm text-slate-500 truncate mt-1">{contact.jobTitle}</p>
+                          <p className="text-sm text-slate-500 truncate">{contact.jobTitle}</p>
                         )}
                       </div>
                     </div>
-                    <div className="flex space-x-1 ml-3">
+                    <div className="flex space-x-1 ml-2">
                       <Link to={`/contacts/edit/${contact.id}`}>
                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                           <Edit className="w-4 h-4" />
@@ -197,22 +181,22 @@ const ContactList = ({
                     </div>
                   </div>
 
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-3 mb-4">
                     {contact.email && (
                       <div className="flex items-center text-sm text-slate-600">
-                        <Mail className="w-4 h-4 mr-4 text-slate-400 flex-shrink-0" />
+                        <Mail className="w-4 h-4 mr-3 text-slate-400" />
                         <span className="truncate">{contact.email}</span>
                       </div>
                     )}
                     {contact.phone && (
                       <div className="flex items-center text-sm text-slate-600">
-                        <Phone className="w-4 h-4 mr-4 text-slate-400 flex-shrink-0" />
+                        <Phone className="w-4 h-4 mr-3 text-slate-400" />
                         <span>{contact.phone}</span>
                       </div>
                     )}
                     {contact.company && (
                       <div className="flex items-center text-sm text-slate-600">
-                        <Building className="w-4 h-4 mr-4 text-slate-400 flex-shrink-0" />
+                        <Building className="w-4 h-4 mr-3 text-slate-400" />
                         <span className="truncate">{contact.company}</span>
                       </div>
                     )}
