@@ -63,10 +63,10 @@ const Dashboard = ({ contacts, loading }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+            <h1 className="text-3xl font-bold">Dashboard</h1>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -85,12 +85,12 @@ const Dashboard = ({ contacts, loading }) => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+            <h1 className="text-3xl font-bold">Dashboard</h1>
             <p className="text-muted-foreground mt-1">Overview of your contact management</p>
           </div>
           <Link to="/contacts/new">
@@ -178,7 +178,7 @@ const Dashboard = ({ contacts, loading }) => {
                       {category.charAt(0).toUpperCase() + category.slice(1)}
                     </Badge>
                   </div>
-                  <span className="font-semibold text-foreground">{count}</span>
+                  <span className="font-semibold">{count}</span>
                 </div>
               ))}
               {Object.keys(stats.byCategory).length === 0 && (
@@ -204,7 +204,7 @@ const Dashboard = ({ contacts, loading }) => {
                       {contact.firstName.charAt(0)}{contact.lastName.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">
+                      <p className="font-medium">
                         {contact.firstName} {contact.lastName}
                       </p>
                       <p className="text-sm text-muted-foreground">{contact.company || contact.email}</p>
@@ -257,7 +257,7 @@ const Dashboard = ({ contacts, loading }) => {
               </Button>
             </div>
           </CardContent>
-        </div>
+        </Card>
       </div>
     </div>
   );
