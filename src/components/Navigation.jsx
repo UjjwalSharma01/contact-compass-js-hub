@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Users, Plus, Home, Search } from 'lucide-react';
+import { Users, Home, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ThemeToggle } from './ThemeToggle';
 
 const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
   const location = useLocation();
@@ -27,7 +27,7 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
   const isSearchVisible = location.pathname === '/contacts';
 
   return (
-    <nav className="bg-white shadow-sm border-b border-slate-200">
+    <nav className="bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo and brand */}
@@ -36,7 +36,7 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <Users className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-slate-800">ContactHub</span>
+              <span className="text-xl font-bold text-foreground">ContactHub</span>
             </div>
 
             {/* Navigation links */}
@@ -48,8 +48,8 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
                   className={({ isActive }) =>
                     `flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? 'bg-blue-50 text-blue-700 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        ? 'bg-primary/10 text-primary shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                     }`
                   }
                 >
@@ -65,27 +65,22 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
             </div>
           </div>
 
-          {/* Search and actions */}
+          {/* Search and theme toggle */}
           <div className="flex items-center space-x-4">
             {isSearchVisible && (
               <div className="relative hidden sm:block">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   type="text"
                   placeholder="Search contacts..."
                   value={searchQuery}
                   onChange={(e) => onSearchChange(e.target.value)}
-                  className="pl-10 w-64 bg-slate-50 border-slate-200 focus:bg-white"
+                  className="pl-10 w-64 bg-background border-input focus:bg-background"
                 />
               </div>
             )}
 
-            <NavLink to="/contacts/new">
-              <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Contact
-              </Button>
-            </NavLink>
+            <ThemeToggle />
           </div>
         </div>
 
@@ -93,13 +88,13 @@ const Navigation = ({ contactCount, searchQuery, onSearchChange }) => {
         {isSearchVisible && (
           <div className="sm:hidden pb-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search contacts..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-10 w-full bg-slate-50 border-slate-200 focus:bg-white"
+                className="pl-10 w-full bg-background border-input focus:bg-background"
               />
             </div>
           </div>
