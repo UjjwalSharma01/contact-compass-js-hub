@@ -1,13 +1,17 @@
-
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, UserPlus, Building, Calendar, TrendingUp, Activity } from 'lucide-react';
+import { Users, UserPlus, Building, Calendar, TrendingUp, Activity, Download } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from '@/hooks/use-toast';
 import { formatRelativeTime, formatDate } from '../utils/helpers';
+import { exportToPDF, exportToJSON, exportToCSV } from '../utils/exportUtils';
 
 const Dashboard = ({ contacts, loading }) => {
+  const [exportFormat, setExportFormat] = useState('json');
+
   const stats = useMemo(() => {
     if (!contacts.length) {
       return {
@@ -59,6 +63,48 @@ const Dashboard = ({ contacts, loading }) => {
     work: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
     family: 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300',
     other: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
+  };
+
+  const handleExport = () => {
+    if (contacts.length === 0) {
+      toast({
+        title: "No contacts to export",
+        description: "Add some contacts first before exporting",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const timestamp = new Date().toISOString().split('T')[0];
+    const filename = `contacts_${timestamp}`;
+
+    try {
+      switch (exportFormat) {
+        case 'pdf':
+          exportToPDF(contacts, filename);
+          break;
+        case 'json':
+          exportToJSON(contacts, filename);
+          break;
+        case 'csv':
+          exportToCSV(contacts, filename);
+          break;
+        default:
+          exportToJSON(contacts, filename);
+      }
+
+      toast({
+        title: "Export successful",
+        description: `Contacts exported as ${exportFormat.toUpperCase()}`,
+      });
+    } catch (error) {
+      console.error('Export error:', error);
+      toast({
+        title: "Export failed",
+        description: "There was an error exporting your contacts",
+        variant: "destructive",
+      });
+    }
   };
 
   if (loading) {
@@ -244,17 +290,26 @@ const Dashboard = ({ contacts, loading }) => {
                 </Button>
               </Link>
               
-              <Button 
-                variant="outline" 
-                className="w-full h-24 flex flex-col items-center space-y-2 hover:bg-purple-50 dark:hover:bg-purple-950 hover:border-purple-200 dark:hover:border-purple-800 transition-all duration-200"
-                onClick={() => {
-                  // TODO: Implement CSV export
-                  console.log('Export functionality coming soon');
-                }}
-              >
-                <Activity className="w-6 h-6" />
-                <span>Export Contacts</span>
-              </Button>
+              <div className="space-y-3">
+                <Select value={exportFormat} onValueChange={setExportFormat}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Export format" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="json">JSON Format</SelectItem>
+                    <SelectItem value="pdf">PDF Document</SelectItem>
+                    <SelectItem value="csv">CSV Spreadsheet</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button 
+                  variant="outline" 
+                  className="w-full h-16 flex flex-col items-center space-y-2 hover:bg-purple-50 dark:hover:bg-purple-950 hover:border-purple-200 dark:hover:border-purple-800 transition-all duration-200"
+                  onClick={handleExport}
+                >
+                  <Download className="w-6 h-6" />
+                  <span>Export Contacts</span>
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
